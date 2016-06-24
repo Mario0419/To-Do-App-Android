@@ -26,7 +26,7 @@ public final class FeedReaderContract {
 
     public static final String SQL_CREATE_ENTRIES =
         "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
-            FeedEntry._ID + " INTEGER PRIMARY KEY," +
+            FeedEntry.COLUMN_NAME_ENTRY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
             FeedEntry.COLUMN_NAME_DESC + TEXT_TYPE + COMMA_SEP +
             FeedEntry.COLUMN_NAME_STATUS + TEXT_TYPE + COMMA_SEP +

@@ -1,3 +1,14 @@
+package com.mx3studios.to_do;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.mx3studios.to_do.FeedReaderDBHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TodoItemSQLiteDao implements TodoItemDao {
 
     private FeedReaderDBHelper dbManager;
@@ -18,10 +29,10 @@ public class TodoItemSQLiteDao implements TodoItemDao {
     public TodoItemSQLiteDao(Context context) {
 
         dbManager = new FeedReaderDBHelper(context);
-        db = dbManager.getWriteableDatabase();
+        db = dbManager.getWritableDatabase();
     }
 
-    public TodoItem retreieveAll() {
+    public ArrayList<TodoItem> retreieveAll() {
 
         ArrayList<TodoItem> results = new ArrayList<>();
 
@@ -30,7 +41,7 @@ public class TodoItemSQLiteDao implements TodoItemDao {
             null, null, null, null, null);
 
         while(cursor != null && cursor.moveToNext()) {
-            resultList.add(new TodoItem(cursor));
+            results.add(new TodoItem(cursor));
         }
 
         return results;
@@ -51,7 +62,7 @@ public class TodoItemSQLiteDao implements TodoItemDao {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_NULLABLE, 
                 toTableRow(item));
 
-        item.setId(row);
+        item.setId((int)row);
 
         return item;
     }
@@ -64,6 +75,7 @@ public class TodoItemSQLiteDao implements TodoItemDao {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_STATUS, result.getStatus());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_COMPLETION_DATE, result.getCompletionDate());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_PRIORITY_LEVEL, result.getLevel());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID, result.getId());
         return values;
     }
 }

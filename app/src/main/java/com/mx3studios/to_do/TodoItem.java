@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class TodoItem implements Serializable{
 
-    private int id;
+    private Integer id = null;
     private String title = "";
     private String description = "";
     private String level = "";
@@ -36,11 +36,11 @@ public class TodoItem implements Serializable{
         id = c.getInt(5);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

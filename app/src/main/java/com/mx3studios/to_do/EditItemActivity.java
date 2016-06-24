@@ -33,6 +33,7 @@ public class EditItemActivity extends AppCompatActivity {
     private ImageButton saveButton;
     private ImageButton deleteButton;
 
+    private TodoItemDao dao;
 
     private int year;
     private int month;
@@ -42,7 +43,7 @@ public class EditItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        dao = TodoItemSQLiteDao.getInstance(getApplication());
         setSupportActionBar(toolbar);
 
         titleEditText = (TextInputEditText)findViewById(R.id.edittext_task_title);
@@ -88,9 +89,7 @@ public class EditItemActivity extends AppCompatActivity {
 
     private void saveTodoItem() {
         loadModelFromView();
-        Intent output = new Intent();
-        output.putExtra("saveTodo", todoItem);
-        setResult(Activity.RESULT_OK, output);
+        todoItem = dao.save(todoItem);
         finish();
     }
 
@@ -99,7 +98,7 @@ public class EditItemActivity extends AppCompatActivity {
         todoItem.setDescription(descEditText.getText().toString());
         todoItem.setStatus((String) statusSpinner.getSelectedItem());
         todoItem.setCompletionDate(month + "/" + day + "/" + year);
-        todoItem.setLevel((String)prioritySpinner.getSelectedItem());
+        todoItem.setLevel((String) prioritySpinner.getSelectedItem());
     }
 
     private void loadViewFromModel() {
@@ -112,7 +111,8 @@ public class EditItemActivity extends AppCompatActivity {
     }
 
     private void deleteTodoItem() {
-        displayConfirmationDialog();
+//        displayConfirmationDialog();
+        deleteItem();
     }
 
     private void displayConfirmationDialog() {
@@ -137,9 +137,10 @@ public class EditItemActivity extends AppCompatActivity {
 
     private void deleteItem() {
         loadModelFromView();
-        Intent output = new Intent();
-        output.putExtra("saveTodo", todoItem);
-        setResult(MainActivity.RESULT_CANCELED, output);
+        FeedReaderDBHelper mDbHelper = new FeedReaderDBHelper(getApplicationContext());
+        if(todoItem.getId() != null) {
+            dao.delete(todoItem.getId());
+        }
         finish();
     }
 
