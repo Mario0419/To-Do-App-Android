@@ -27,6 +27,15 @@ public class TodoItem implements Serializable{
         setCursorValues(c);
     }
 
+    private void setCursorValues(Cursor c) {
+        title = c.getString(0);
+        description = c.getString(1);
+        status = c.getString(2);
+        completionDate = c.getString(3);
+        level = c.getString(4);
+        id = c.getInt(5);
+    }
+
     public int getId() {
         return id;
     }
@@ -35,15 +44,6 @@ public class TodoItem implements Serializable{
         this.id = id;
     }
 
-    private void setCursorValues(Cursor c) {
-        title = c.getString(0);
-        description = c.getString(1);
-        status = c.getString(2);
-        completionDate = c.getString(3);
-        level = c.getString(4);
-        id = c.getInt(5);
-
-    }
     public String getNotes() {
         return notes;
     }
