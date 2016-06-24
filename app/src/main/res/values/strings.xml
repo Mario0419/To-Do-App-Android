@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">To-Do</string>
+    <string name="add">Add</string>
+    <string name="title_activity_edit_item">EditItemActivity</string>
+
+    <string-array name="priority_array">
+        <item>LOW</item>
+        <item>MEDIUM</item>
+        <item>HIGH</item>
+    </string-array>
+    <string-array name="status_array">
+        <item>To do</item>
+        <item>Hold</item>
+        <item>Done</item>
+    </string-array>
+</resources>
