@@ -72,18 +72,17 @@ public class EditItemActivity extends AppCompatActivity {
             }
         });
 
-        if(savedInstanceState != null) {
-            todoItem = (TodoItem) savedInstanceState.get("TodoItem");
+        Bundle bundle = getIntent().getExtras();
+        if(bundle.get("TodoItem") != null) {
+            todoItem = (TodoItem) bundle.get("TodoItem");
         } else {
             todoItem = new TodoItem();
         }
 
-        if(todoItem != null) {
-            setupItem();
-        }
+        loadViewFromModel();
     }
 
-    private void setupItem() {
+    private void setColor() {
 
     }
 

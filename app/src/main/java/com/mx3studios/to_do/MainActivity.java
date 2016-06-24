@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDbHelper = new FeedReaderDBHelper(getApplicationContext());
         list = dao.retreieveAll();
+        Collections.sort(list);
         arrayAdapter = new TodoAdapter(this.getApplicationContext(), list);
         mListView.setAdapter(arrayAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         list = dao.retreieveAll();
+        Collections.sort(list);
         arrayAdapter = new TodoAdapter(this.getApplicationContext(), list);
         mListView.setAdapter(arrayAdapter);
     }
@@ -74,9 +77,7 @@ public class MainActivity extends AppCompatActivity {
         Intent itemInfo = new Intent(this, EditItemActivity.class);
         itemInfo.putExtra("TodoItem", item);
         startActivityForResult(itemInfo, Activity.RESULT_OK);
-
     }
-
 
     public class TodoAdapter extends ArrayAdapter<TodoItem> {
         public TodoAdapter(Context context, ArrayList<TodoItem> list) {

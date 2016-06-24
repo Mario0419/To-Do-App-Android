@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by mario on 6/20/2016.
  */
-public class TodoItem implements Serializable{
+public class TodoItem implements Serializable, Comparable<TodoItem>{
 
     private Integer id = null;
     private String title = "";
@@ -116,5 +116,10 @@ public class TodoItem implements Serializable{
             default:
                 return 0;
         }
+    }
+
+    @Override
+    public int compareTo(TodoItem other) {
+        return other.getLevelIndex() - this.getLevelIndex();
     }
 }
