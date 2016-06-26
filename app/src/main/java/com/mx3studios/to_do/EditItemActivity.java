@@ -110,7 +110,6 @@ public class EditItemActivity extends AppCompatActivity {
     }
 
     private void deleteTodoItem() {
-//        displayConfirmationDialog();
         deleteItem();
     }
 

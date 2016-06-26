@@ -6,4 +6,7 @@
     <color name="colorAccentMedium">#FFBB99</color>
     <color name="colorAccentHigh">#FF4D4D</color>
     <color name="orange">#FFA500</color>
+    <color name="redMaterial">#EF5350</color>
+    <color name="indigoMaterial">#5C6BC0</color>
+    <color name="greenMaterial">#43A047</color>
 </resources>
