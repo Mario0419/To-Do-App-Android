@@ -2,10 +2,12 @@ package com.mx3studios.to_do;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,6 +49,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 openEditActivity((TodoItem) mListView.getItemAtPosition(i));
+            }
+        });
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DeleteDialogStyle);
+                TodoItem item = (TodoItem)mListView.getItemAtPosition(i);
+                final int position = i;
+                builder.setMessage("Are you sure you want to delete this item?");
+                builder.setTitle("To-Do Item");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int pos) {
+                        list.remove(position);
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("No", null);
+                builder.show();
+                return true;
             }
         });
 
@@ -102,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                     priority.setTextColor(Color.GREEN);
                     break;
                 case 1:
-                    priority.setTextColor(Color.YELLOW);
+                    priority.setTextColor(Color.BLUE);
                     break;
                 case 2:
                     priority.setTextColor(Color.RED);
