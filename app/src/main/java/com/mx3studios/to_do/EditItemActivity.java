@@ -19,19 +19,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.Calendar;
 
 public class EditItemActivity extends AppCompatActivity {
 
-    private AppCompatSpinner prioritySpinner;
     private AppCompatSpinner statusSpinner;
     private TextInputEditText titleEditText;
     private TextInputEditText descEditText;
     private TodoItem todoItem;
     private ImageButton saveButton;
     private ImageButton deleteButton;
+
+    private RadioButton lowButton;
+    private RadioButton mediumButton;
+    private RadioButton highButton;
 
     private TodoItemDao dao;
 
@@ -48,9 +53,6 @@ public class EditItemActivity extends AppCompatActivity {
 
         titleEditText = (TextInputEditText)findViewById(R.id.edittext_task_title);
         descEditText = (TextInputEditText)findViewById(R.id.edittext_task_desc);
-        prioritySpinner = (AppCompatSpinner)findViewById(R.id.spinner_priority);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.priority_array, android.R.layout.simple_spinner_dropdown_item);
-        prioritySpinner.setAdapter(adapter);
 
         statusSpinner = (AppCompatSpinner)findViewById(R.id.spinner_status);
         ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(this,R.array.status_array, android.R.layout.simple_spinner_dropdown_item);
@@ -72,7 +74,12 @@ public class EditItemActivity extends AppCompatActivity {
             }
         });
 
+        lowButton = (RadioButton)findViewById(R.id.radio_button_low);
+        mediumButton = (RadioButton)findViewById(R.id.radio_button_med);
+        highButton =  (RadioButton)findViewById(R.id.radio_button_high);
+
         Bundle bundle = getIntent().getExtras();
+
         if(bundle.get("TodoItem") != null) {
             todoItem = (TodoItem) bundle.get("TodoItem");
         } else {
@@ -97,16 +104,68 @@ public class EditItemActivity extends AppCompatActivity {
         todoItem.setDescription(descEditText.getText().toString());
         todoItem.setStatus((String) statusSpinner.getSelectedItem());
         todoItem.setCompletionDate(month + "/" + day + "/" + year);
-        todoItem.setLevel((String) prioritySpinner.getSelectedItem());
+        todoItem.setLevel(getSelectedRadioButton());
+    }
+
+    private String getSelectedRadioButton() {
+        RadioGroup rg = (RadioGroup)findViewById(R.id.radio_group_priority);
+        switch(rg.getCheckedRadioButtonId()) {
+            case R.id.radio_button_low:
+                return "LOW";
+            case R.id.radio_button_med:
+                return "MEDIUM";
+            case R.id.radio_button_high:
+                return "HIGH";
+            default:
+                return "LOW";
+        }
     }
 
     private void loadViewFromModel() {
         titleEditText.setText(todoItem.getTitle());
         descEditText.setText(todoItem.getDescription());
         statusSpinner.setSelection(todoItem.getStatusIndex());
-        prioritySpinner.setSelection(todoItem.getLevelIndex());
+        switch(todoItem.getLevelIndex()) {
+            case 0:
+                lowButton.setChecked(true);
+                break;
+            case 1:
+                mediumButton.setChecked(true);
+                break;
+            case 2:
+                highButton.setChecked(true);
+                break;
+            default:
+                lowButton.setChecked(true);
+                break;
+        }
         TextView tv = (TextView)findViewById(R.id.textview_datechooser);
         tv.setText("Due Date: " + todoItem.getCompletionDate());
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton)view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.radio_button_low:
+                if (checked) {
+
+                }
+                break;
+            case R.id.radio_button_med:
+                if (checked) {
+
+                }
+                break;
+            case R.id.radio_button_high:
+                if (checked) {
+
+                }
+                break;
+            default:
+                break;
+        }
+
     }
 
     private void deleteTodoItem() {
