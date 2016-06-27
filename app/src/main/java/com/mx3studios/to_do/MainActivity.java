@@ -113,17 +113,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position){
             CardView cardView = (CardView)holder.mView.findViewById(R.id.card_view);
+            final TodoItem item = mDataset.get(position);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openEditActivity(mDataset.get(position));
+                    openEditActivity(item);
                 }
             });
             cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DeleteDialogStyle);
-                    final TodoItem item =  mDataset.get(position);
+                    final TodoItem item = mDataset.get(position);
                     builder.setMessage("Are you sure you want to delete this item?");
                     builder.setTitle("To-Do Item");
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -140,8 +141,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             TextView title = (TextView) holder.mView.findViewById(R.id.textview_list_title);
-            title.setText(mDataset.get(position).getTitle());
-            switch(mDataset.get(position).getLevelIndex()) {
+            title.setText(item.getTitle());
+
+            TextView desc = (TextView) holder.mView.findViewById(R.id.textview_list_desc);
+            desc.setText(item.getDescription());
+
+            switch(item.getLevelIndex()) {
                 case 0:
                     title.setBackgroundResource(R.color.greenMaterial);
                     break;
