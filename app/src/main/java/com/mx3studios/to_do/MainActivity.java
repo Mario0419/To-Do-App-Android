@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DeleteDialogStyle);
                     final TodoItem item = mDataset.get(position);
                     builder.setMessage("Are you sure you want to delete this item?");
-                    builder.setTitle("To-Do Item");
+                    builder.setTitle(item.getTitle());
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int pos) {

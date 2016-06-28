@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Do Now</string>
+    <string name="app_name">Due Now</string>
     <string name="add">Add</string>
     <string name="title_activity_edit_item">Edit Task</string>
 
@@ -16,4 +16,5 @@
     <string name="low">Low</string>
     <string name="medium">Medium</string>
     <string name="high">High</string>
+    <string name="priority">Priority</string>
 </resources>
