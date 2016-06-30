@@ -17,6 +17,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
 public class EditItemActivity extends AppCompatActivity {
@@ -37,9 +39,9 @@ public class EditItemActivity extends AppCompatActivity {
 
     private TodoItemDao dao;
 
-    private int year;
-    private int month;
-    private int day;
+    private int year= 0;
+    private int month = 0;
+    private int day = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,9 @@ public class EditItemActivity extends AppCompatActivity {
         todoButtonStatus = (RadioButton)findViewById(R.id.radio_button_todo_status);
         holdButtonStatus = (RadioButton)findViewById(R.id.radio_button_hold_status);
         completedButtonStatus = (RadioButton)findViewById(R.id.radio_button_complete_status);
+
+        TextView tv = (TextView)findViewById(R.id.textview_datechooser);
+        tv.setText("Due Date: -");
 
         saveButton = (ImageButton)findViewById(R.id.button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +105,7 @@ public class EditItemActivity extends AppCompatActivity {
     }
 
     private boolean validateFields() {
-        if(todoItem.getTitle() == null || todoItem.getTitle().equals("")) {
+        if(todoItem.getTitle() == null || todoItem.getTitle().trim().equals("")) {
             Toast.makeText(EditItemActivity.this, "Please fill in a task title.", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -111,9 +116,23 @@ public class EditItemActivity extends AppCompatActivity {
         todoItem.setTitle(titleEditText.getText().toString());
         todoItem.setDescription(descEditText.getText().toString());
         todoItem.setStatus(getSelectedStatusRadioButton());
-        todoItem.setCompletionDate(month + "/" + day + "/" + year);
+        todoItem.setCompletionDate(getDateFromDateView());
         todoItem.setLevel(getSelectedPriorityRadioButton());
     }
+
+    private String getDateFromDateView() {
+        TextView dateView = (TextView)findViewById(R.id.textview_datechooser);
+
+        String str  = dateView.getText().toString();
+        String[] arr = str.split("/");
+        if(arr.length != 1) {
+            day = Integer.valueOf(arr[1]);
+            year = Integer.valueOf(arr[2]);
+            month = Integer.valueOf(arr[0].split(" ")[2]);
+        }
+        return month + "/" + day + "/" + year;
+    }
+
 
     private String getSelectedPriorityRadioButton() {
         RadioGroup rg = (RadioGroup)findViewById(R.id.radio_group_priority);
@@ -175,7 +194,9 @@ public class EditItemActivity extends AppCompatActivity {
                 break;
         }
         TextView tv = (TextView)findViewById(R.id.textview_datechooser);
-        tv.setText("Due Date: " + todoItem.getCompletionDate());
+        if(todoItem.getCompletionDate() != null && !todoItem.getCompletionDate().equals("")) {
+            tv.setText("Due Date: " + todoItem.getCompletionDate());
+        }
     }
 
     public void onRadioButtonClicked(View view) {
@@ -236,51 +257,12 @@ public class EditItemActivity extends AppCompatActivity {
         finish();
     }
 
-    public class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        public int year;
-        public int month;
-        public int day;
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public DatePickerFragment() {
-
-        }
-
-        public void onDateSet(DatePicker view, int y, int m, int d) {
-            // Do something with the date chosen by the user
-            this.year = y;
-            this.month = m;
-            this.day = d;
-            setDateTextView(y,m,d);
-        }
-
-    }
-
-    public void setDateTextView(int y, int m, int d) {
-        year = y;
-        month = m;
-        day = d;
-        TextView tv = (TextView)findViewById(R.id.textview_datechooser);
-        tv.setText("Due Date: " + month + "/" + day + "/" + year);
-    }
-
-
-
     public void showDatePickerDialog(View v) {
+
         DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.setDateTextView((TextView)findViewById(R.id.textview_datechooser));
         newFragment.show(getFragmentManager(), "datePicker");
     }
 
 }
+

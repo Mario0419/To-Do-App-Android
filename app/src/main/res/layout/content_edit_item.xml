@@ -42,6 +42,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
+                android:textSize="18dp"
                 android:layout_marginTop="18dp"
                 android:text="Due Date"
                 android:onClick="showDatePickerDialog"/>
@@ -125,23 +126,17 @@
                     android:id="@+id/radio_button_todo_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/low"
-                    android:onClick="onRadioButtonClicked"
-                    android:textColor="@color/greenMaterial"/>
+                    android:text="@string/todo"/>
                 <RadioButton
                     android:id="@+id/radio_button_hold_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/medium"
-                    android:onClick="onRadioButtonClicked"
-                    android:textColor="@color/indigoMaterial"/>
+                    android:text="@string/hold"/>
                 <RadioButton
                     android:id="@+id/radio_button_complete_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/high"
-                    android:onClick="onRadioButtonClicked"
-                    android:textColor="@color/redMaterial"/>
+                    android:text="@string/done"/>
 
             </RadioGroup>
         </LinearLayout>

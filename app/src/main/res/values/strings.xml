@@ -17,4 +17,7 @@
     <string name="medium">Medium</string>
     <string name="high">High</string>
     <string name="priority">Priority</string>
+    <string name="todo">To do</string>
+    <string name="hold">Hold</string>
+    <string name="done">Done</string>
 </resources>
