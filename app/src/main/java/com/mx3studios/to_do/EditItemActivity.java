@@ -1,42 +1,39 @@
 package com.mx3studios.to_do;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
 public class EditItemActivity extends AppCompatActivity {
 
-    private AppCompatSpinner statusSpinner;
     private TextInputEditText titleEditText;
     private TextInputEditText descEditText;
     private TodoItem todoItem;
     private ImageButton saveButton;
     private ImageButton deleteButton;
 
-    private RadioButton lowButton;
-    private RadioButton mediumButton;
-    private RadioButton highButton;
+    private RadioButton lowButtonPriority;
+    private RadioButton mediumButtonPriority;
+    private RadioButton highButtonPriority;
+
+    private RadioButton todoButtonStatus;
+    private RadioButton holdButtonStatus;
+    private RadioButton completedButtonStatus;
 
     private TodoItemDao dao;
 
@@ -54,9 +51,9 @@ public class EditItemActivity extends AppCompatActivity {
         titleEditText = (TextInputEditText)findViewById(R.id.edittext_task_title);
         descEditText = (TextInputEditText)findViewById(R.id.edittext_task_desc);
 
-        statusSpinner = (AppCompatSpinner)findViewById(R.id.spinner_status);
-        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(this,R.array.status_array, android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(statusAdapter);
+        todoButtonStatus = (RadioButton)findViewById(R.id.radio_button_todo_status);
+        holdButtonStatus = (RadioButton)findViewById(R.id.radio_button_hold_status);
+        completedButtonStatus = (RadioButton)findViewById(R.id.radio_button_complete_status);
 
         saveButton = (ImageButton)findViewById(R.id.button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -74,9 +71,9 @@ public class EditItemActivity extends AppCompatActivity {
             }
         });
 
-        lowButton = (RadioButton)findViewById(R.id.radio_button_low);
-        mediumButton = (RadioButton)findViewById(R.id.radio_button_med);
-        highButton =  (RadioButton)findViewById(R.id.radio_button_high);
+        lowButtonPriority = (RadioButton)findViewById(R.id.radio_button_low);
+        mediumButtonPriority = (RadioButton)findViewById(R.id.radio_button_med);
+        highButtonPriority =  (RadioButton)findViewById(R.id.radio_button_high);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -95,19 +92,30 @@ public class EditItemActivity extends AppCompatActivity {
 
     private void saveTodoItem() {
         loadModelFromView();
+        if(!validateFields()) {
+            return;
+        }
         todoItem = dao.save(todoItem);
         finish();
+    }
+
+    private boolean validateFields() {
+        if(todoItem.getTitle() == null || todoItem.getTitle().equals("")) {
+            Toast.makeText(EditItemActivity.this, "Please fill in a task title.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void loadModelFromView() {
         todoItem.setTitle(titleEditText.getText().toString());
         todoItem.setDescription(descEditText.getText().toString());
-        todoItem.setStatus((String) statusSpinner.getSelectedItem());
+        todoItem.setStatus(getSelectedStatusRadioButton());
         todoItem.setCompletionDate(month + "/" + day + "/" + year);
-        todoItem.setLevel(getSelectedRadioButton());
+        todoItem.setLevel(getSelectedPriorityRadioButton());
     }
 
-    private String getSelectedRadioButton() {
+    private String getSelectedPriorityRadioButton() {
         RadioGroup rg = (RadioGroup)findViewById(R.id.radio_group_priority);
         switch(rg.getCheckedRadioButtonId()) {
             case R.id.radio_button_low:
@@ -121,22 +129,49 @@ public class EditItemActivity extends AppCompatActivity {
         }
     }
 
+    private String getSelectedStatusRadioButton() {
+        RadioGroup rg = (RadioGroup)findViewById(R.id.radio_group_status);
+        switch(rg.getCheckedRadioButtonId()) {
+            case R.id.radio_button_todo_status:
+                return  "To do";
+            case R.id.radio_button_hold_status:
+                return "Hold";
+            case R.id.radio_button_complete_status:
+                return "Done";
+            default:
+                return "To do";
+        }
+    }
+
     private void loadViewFromModel() {
         titleEditText.setText(todoItem.getTitle());
         descEditText.setText(todoItem.getDescription());
-        statusSpinner.setSelection(todoItem.getStatusIndex());
-        switch(todoItem.getLevelIndex()) {
+        switch(todoItem.getStatusIndex()) {
             case 0:
-                lowButton.setChecked(true);
+                todoButtonStatus.setChecked(true);
                 break;
             case 1:
-                mediumButton.setChecked(true);
+                holdButtonStatus.setChecked(true);
                 break;
             case 2:
-                highButton.setChecked(true);
+                completedButtonStatus.setChecked(true);
                 break;
             default:
-                lowButton.setChecked(true);
+                todoButtonStatus.setChecked(true);
+                break;
+        }
+        switch(todoItem.getLevelIndex()) {
+            case 0:
+                lowButtonPriority.setChecked(true);
+                break;
+            case 1:
+                mediumButtonPriority.setChecked(true);
+                break;
+            case 2:
+                highButtonPriority.setChecked(true);
+                break;
+            default:
+                lowButtonPriority.setChecked(true);
                 break;
         }
         TextView tv = (TextView)findViewById(R.id.textview_datechooser);

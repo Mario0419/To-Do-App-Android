@@ -95,38 +95,56 @@
             </RadioGroup>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000000"/>
 
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="150dp"
-                android:text="Status"/>
-
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/spinner_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
-                android:gravity="end">
-            </android.support.v7.widget.AppCompatSpinner>
-        </LinearLayout>
+                android:textStyle="italic"
+                android:textAlignment="center"
+                android:textSize="16dp"
+                android:text="Status"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000000"/>
+            <RadioGroup
+                android:id="@+id/radio_group_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_button_todo_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/low"
+                    android:onClick="onRadioButtonClicked"
+                    android:textColor="@color/greenMaterial"/>
+                <RadioButton
+                    android:id="@+id/radio_button_hold_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/medium"
+                    android:onClick="onRadioButtonClicked"
+                    android:textColor="@color/indigoMaterial"/>
+                <RadioButton
+                    android:id="@+id/radio_button_complete_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/high"
+                    android:onClick="onRadioButtonClicked"
+                    android:textColor="@color/redMaterial"/>
+
+            </RadioGroup>
+        </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
