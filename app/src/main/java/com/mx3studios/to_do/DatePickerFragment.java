@@ -59,7 +59,7 @@ public class DatePickerFragment extends DialogFragment
         if(year == 0 && month == 0 && day == 0) {
             dateView.setText("Due Date: -");
         } else {
-            dateView.setText("Due Date: " + month + "/" + day + "/" + year);
+            dateView.setText("Due Date: " + (1 + month) + "/" + day + "/" + year);
         }
     }
 }

@@ -130,6 +130,9 @@ public class EditItemActivity extends AppCompatActivity {
             year = Integer.valueOf(arr[2]);
             month = Integer.valueOf(arr[0].split(" ")[2]);
         }
+        if (month == 0 && day == 0 && year == 0) {
+            return "";
+        }
         return month + "/" + day + "/" + year;
     }
 

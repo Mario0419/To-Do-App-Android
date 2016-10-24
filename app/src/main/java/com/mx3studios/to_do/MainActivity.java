@@ -141,8 +141,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             TextView title = (TextView) holder.mView.findViewById(R.id.textview_list_title);
-            title.setText(item.getTitle());
+            String completionDate = item.getCompletionDate();
 
+            title.setText(item.getTitle() + (!completionDate.equals("") ? ("\n" + item.getCompletionDate()) : ""));
             TextView desc = (TextView) holder.mView.findViewById(R.id.textview_list_desc);
             desc.setText(item.getDescription());
 

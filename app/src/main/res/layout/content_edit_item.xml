@@ -26,7 +26,7 @@
                 android:id="@+id/edittext_task_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="20"
+                android:maxLength="30"
                 android:singleLine="true"
                 android:hint="Task Title"/>
         </android.support.design.widget.TextInputLayout>
@@ -150,13 +150,10 @@
                 android:id="@+id/edittext_task_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
+                android:maxLines="5"
+                android:maxLength="1000"
                 android:hint="Task Description"/>
 
         </android.support.design.widget.TextInputLayout>
-
     </LinearLayout>
-
-
-
 </RelativeLayout>
